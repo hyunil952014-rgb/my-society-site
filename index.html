@@ -53,21 +53,8 @@
 
   <footer class="site-footer" id="site-footer"></footer>
 
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script src="/js/site.js"></script>
   <script src="/js/home.js"></script>
-
-  <!-- 관리자 초대 이메일 링크로 접속 시 로그인 완료 후 자동으로 /admin 으로 이동시켜 줍니다. -->
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
-  <script>
-    if (window.netlifyIdentity) {
-      window.netlifyIdentity.on("init", (user) => {
-        if (!user) {
-          window.netlifyIdentity.on("login", () => {
-            document.location.href = "/admin/";
-          });
-        }
-      });
-    }
-  </script>
 </body>
 </html>

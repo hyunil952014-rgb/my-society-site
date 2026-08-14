@@ -77,3 +77,21 @@ collections:
               - { label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
               - { label: "분류", name: "category", widget: "select", options: ["일반", "학술대회", "채용", "기타"] }
               - { label: "내용", name: "body", widget: "text" }
+
+  - name: "education"
+    label: "교육안내"
+    files:
+      - file: "content/education.json"
+        label: "교육안내 목록"
+        name: "education"
+        fields:
+          - label: "교육안내"
+            name: "items"
+            widget: "list"
+            summary: "{{date}} - {{title}}"
+            fields:
+              - { label: "제목", name: "title", widget: "string" }
+              - { label: "식별자(id, 숫자·영문 조합, 중복 금지)", name: "id", widget: "string" }
+              - { label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+              - { label: "분류", name: "category", widget: "select", options: ["강의 안내", "워크숍", "세미나", "기타"] }
+              - { label: "내용", name: "body", widget: "text" }

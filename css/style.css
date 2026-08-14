@@ -83,6 +83,55 @@ img { max-width: 100%; display: block; }
   color: #fff;
 }
 
+.auth-area {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: 8px;
+  padding-left: 14px;
+  border-left: 1px solid rgba(255, 255, 255, 0.18);
+  font-size: 0.88rem;
+}
+
+.auth-area .auth-link {
+  color: #dbe3ec;
+  font-weight: 600;
+}
+.auth-area .auth-link:hover { color: #fff; text-decoration: underline; }
+
+.auth-area .admin-link {
+  color: var(--accent);
+}
+
+.auth-area .auth-user {
+  color: #cdd7e2;
+  white-space: nowrap;
+}
+
+.auth-btn {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.86rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+.auth-btn:hover { background: rgba(255, 255, 255, 0.22); }
+
+@media (max-width: 720px) {
+  .auth-area {
+    margin-left: 0;
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.18);
+    margin-top: 8px;
+    padding-top: 12px;
+    width: 100%;
+  }
+}
+
 .nav-toggle {
   display: none;
   background: none;
@@ -362,3 +411,57 @@ img { max-width: 100%; display: block; }
   color: var(--text-muted);
   padding: 24px 4px;
 }
+
+/* Forms */
+.apply-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.hp-field {
+  position: absolute;
+  left: -9999px;
+}
+
+.form-label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin: 16px 0 6px;
+}
+.form-label:first-of-type { margin-top: 0; }
+
+.form-input {
+  font-family: inherit;
+  font-size: 0.96rem;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--text);
+}
+.form-input:focus {
+  outline: none;
+  border-color: var(--navy);
+}
+
+.form-notice {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin: 18px 0 0;
+}
+
+.form-submit {
+  margin-top: 18px;
+  align-self: flex-start;
+  background: var(--navy);
+  color: #fff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 0.96rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.form-submit:hover { background: var(--navy-dark); }

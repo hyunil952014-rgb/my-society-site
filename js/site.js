@@ -1,9 +1,11 @@
-// Shared header/footer rendering and small utilities used across all pages.
+// Shared header/footer rendering, auth (Netlify Identity), and small utilities
+// used across all pages.
 
 const NAV_ITEMS = [
   { href: "/index.html", label: "홈" },
   { href: "/about.html", label: "학회 소개" },
   { href: "/board.html", label: "임원진 소개" },
+  { href: "/education.html", label: "교육안내" },
   { href: "/notices.html", label: "공지사항" },
 ];
 
@@ -42,7 +44,10 @@ function renderHeader(orgName, orgNameEn) {
         ${escapeHtml(orgName)}
         <small>${escapeHtml(orgNameEn || "")}</small>
       </a>
-      <nav class="nav" id="site-nav">${navHtml}</nav>
+      <nav class="nav" id="site-nav">
+        ${navHtml}
+        <span class="auth-area" id="auth-area"></span>
+      </nav>
       <button class="nav-toggle" id="nav-toggle" aria-label="메뉴 열기">&#9776;</button>
     </div>
   `;
@@ -66,16 +71,84 @@ function renderFooter(orgName, contact) {
   `;
 }
 
+function isAdmin(user) {
+  return !!(
+    user &&
+    user.app_metadata &&
+    Array.isArray(user.app_metadata.roles) &&
+    user.app_metadata.roles.includes("admin")
+  );
+}
+
+function renderAuthArea(user) {
+  const area = document.getElementById("auth-area");
+  if (!area) return;
+
+  if (!user) {
+    area.innerHTML = `
+      <a href="/join.html" class="auth-link">회원가입</a>
+      <button type="button" class="auth-btn" id="auth-login-btn">로그인</button>
+    `;
+    document.getElementById("auth-login-btn").addEventListener("click", () => {
+      window.netlifyIdentity && window.netlifyIdentity.open("login");
+    });
+    return;
+  }
+
+  const displayName = (user.user_metadata && user.user_metadata.full_name) || user.email;
+  const adminLink = isAdmin(user)
+    ? `<a href="/admin/" class="auth-link admin-link">사이트 편집</a>`
+    : "";
+
+  area.innerHTML = `
+    <span class="auth-user">${escapeHtml(displayName)}님</span>
+    ${adminLink}
+    <button type="button" class="auth-btn" id="auth-logout-btn">로그아웃</button>
+  `;
+  document.getElementById("auth-logout-btn").addEventListener("click", () => {
+    window.netlifyIdentity && window.netlifyIdentity.logout();
+  });
+}
+
+function initAuth() {
+  if (!window.netlifyIdentity) return;
+
+  window.netlifyIdentity.on("init", (user) => {
+    renderAuthArea(user);
+  });
+
+  window.netlifyIdentity.on("login", (user) => {
+    renderAuthArea(user);
+    const hash = window.location.hash || "";
+    const isConfirmationFlow =
+      hash.includes("confirmation_token") ||
+      hash.includes("invite_token") ||
+      hash.includes("recovery_token");
+    window.netlifyIdentity.close();
+    if (isConfirmationFlow) {
+      window.location.href = isAdmin(user) ? "/admin/" : "/index.html";
+    }
+  });
+
+  window.netlifyIdentity.on("logout", () => {
+    renderAuthArea(null);
+  });
+
+  window.netlifyIdentity.init();
+}
+
 async function initLayout() {
+  let site = null;
   try {
-    const site = await fetchJSON("/content/site.json");
+    site = await fetchJSON("/content/site.json");
     renderHeader(site.orgName, site.orgNameEn);
     renderFooter(site.orgName, site.contact);
-    return site;
   } catch (e) {
     console.error(e);
     renderHeader("학회", "");
     renderFooter("학회", {});
-    return null;
   }
+  renderAuthArea(null);
+  initAuth();
+  return site;
 }
