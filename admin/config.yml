@@ -4,6 +4,10 @@ backend:
 
 # Netlify Identity(무료)로 로그인한 사용자가 "저장"을 누르면
 # 이 저장소(main 브랜치)에 자동으로 커밋됩니다. 코드를 몰라도 됩니다.
+#
+# 임원진/공지사항/교육안내는 "폴더 컬렉션"이라 게시판처럼 글 목록에서
+# 새 글 추가, 개별 글 수정·삭제가 됩니다. 저장하면 Netlify가 자동으로
+# scripts/build_content.py를 실행해 화면에 보이는 목록 파일을 다시 만듭니다.
 
 media_folder: "images/uploads"
 public_folder: "/images/uploads"
@@ -44,54 +48,49 @@ collections:
 
   - name: "board"
     label: "임원진 소개"
-    files:
-      - file: "content/board.json"
-        label: "임원진 목록"
-        name: "board"
-        fields:
-          - label: "임원진/강사"
-            name: "members"
-            widget: "list"
-            summary: "{{title}} - {{name}}"
-            fields:
-              - { label: "이름", name: "name", widget: "string" }
-              - { label: "직함", name: "title", widget: "string" }
-              - { label: "소속", name: "affiliation", widget: "string", required: false }
-              - { label: "약력", name: "bio", widget: "text", required: false }
-              - { label: "사진", name: "photo", widget: "image", required: false }
+    folder: "content/board"
+    create: true
+    delete: true
+    extension: "json"
+    format: "json"
+    slug: "{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}"
+    identifier_field: "name"
+    summary: "{{title}} - {{name}}"
+    fields:
+      - { label: "이름", name: "name", widget: "string" }
+      - { label: "직함", name: "title", widget: "string" }
+      - { label: "소속", name: "affiliation", widget: "string", required: false }
+      - { label: "약력", name: "bio", widget: "text", required: false }
+      - { label: "사진", name: "photo", widget: "image", required: false }
 
   - name: "notices"
     label: "공지사항"
-    files:
-      - file: "content/notices.json"
-        label: "공지사항 목록"
-        name: "notices"
-        fields:
-          - label: "공지"
-            name: "notices"
-            widget: "list"
-            summary: "{{date}} - {{title}}"
-            fields:
-              - { label: "제목", name: "title", widget: "string" }
-              - { label: "식별자(id, 숫자·영문 조합, 중복 금지)", name: "id", widget: "string" }
-              - { label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
-              - { label: "분류", name: "category", widget: "select", options: ["일반", "학술대회", "채용", "기타"] }
-              - { label: "내용", name: "body", widget: "text" }
+    folder: "content/notices"
+    create: true
+    delete: true
+    extension: "json"
+    format: "json"
+    slug: "{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}"
+    identifier_field: "title"
+    summary: "{{date}} - {{title}}"
+    fields:
+      - { label: "제목", name: "title", widget: "string" }
+      - { label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+      - { label: "분류", name: "category", widget: "select", options: ["일반", "학술대회", "채용", "기타"] }
+      - { label: "내용", name: "body", widget: "text" }
 
   - name: "education"
     label: "교육안내"
-    files:
-      - file: "content/education.json"
-        label: "교육안내 목록"
-        name: "education"
-        fields:
-          - label: "교육안내"
-            name: "items"
-            widget: "list"
-            summary: "{{date}} - {{title}}"
-            fields:
-              - { label: "제목", name: "title", widget: "string" }
-              - { label: "식별자(id, 숫자·영문 조합, 중복 금지)", name: "id", widget: "string" }
-              - { label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
-              - { label: "분류", name: "category", widget: "select", options: ["강의 안내", "워크숍", "세미나", "기타"] }
-              - { label: "내용", name: "body", widget: "text" }
+    folder: "content/education"
+    create: true
+    delete: true
+    extension: "json"
+    format: "json"
+    slug: "{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}"
+    identifier_field: "title"
+    summary: "{{date}} - {{title}}"
+    fields:
+      - { label: "제목", name: "title", widget: "string" }
+      - { label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+      - { label: "분류", name: "category", widget: "select", options: ["강의 안내", "워크숍", "세미나", "기타"] }
+      - { label: "내용", name: "body", widget: "text" }

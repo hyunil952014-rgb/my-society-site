@@ -1,49 +1,61 @@
 # 학회 홈페이지
 
-빌드 과정 없는 순수 정적 사이트입니다. HTML/CSS/JS만으로 동작하며,
-글 내용은 `content/` 폴더의 JSON 파일에서 불러옵니다.
+정적 사이트입니다. HTML/CSS/JS만으로 동작하며, 글 내용은 `content/` 폴더의
+JSON 파일에서 불러옵니다.
 
 라이브 주소: https://empkkorea.netlify.app
 
 ## 폴더 구조
 
 ```
-index.html            홈
-about.html             학회 소개 (+ 연혁)
-board.html             임원진 소개
-education.html         교육안내 (목록 + 상세)
-notices.html           공지사항 (목록 + 상세)
-join.html               회원가입 신청서 (Netlify Forms로 접수)
-join-success.html       가입 신청 완료 안내
-css/style.css           디자인
-js/                    각 페이지 스크립트
-content/site.json       학회 기본 정보 · 소개글 · 연혁 · 연락처
-content/board.json      임원진 목록
-content/notices.json    공지사항 목록
-content/education.json  교육안내 목록
-admin/                  코드 없이 글을 관리할 수 있는 관리자 화면 (Decap CMS)
+index.html               홈
+about.html                학회 소개 (+ 연혁)
+board.html                임원진 소개
+education.html            교육안내 (목록 + 상세)
+notices.html              공지사항 (목록 + 상세)
+join.html                  회원가입 신청서 (Netlify Forms로 접수)
+join-success.html          가입 신청 완료 안내
+css/style.css              디자인
+js/                       각 페이지 스크립트
+admin/                     코드 없이 글을 관리할 수 있는 관리자 화면 (Decap CMS)
+scripts/build_content.py   아래 폴더별 글을 목록 JSON으로 합쳐주는 빌드 스크립트
+
+content/site.json          학회 기본 정보 · 소개글 · 연혁 · 연락처 (직접 파일 하나 수정)
+content/board/*.json        임원진 — 한 명당 파일 하나 (게시판처럼 추가·수정·삭제)
+content/notices/*.json      공지사항 — 글 하나당 파일 하나
+content/education/*.json    교육안내 — 글 하나당 파일 하나
+
+content/board.json, content/notices.json, content/education.json
+  → 위 세 폴더 내용을 합쳐서 자동 생성되는 파일. 사이트는 이 파일들을 읽어서
+    화면에 보여줍니다. 직접 수정하지 마세요 (배포할 때마다 덮어써집니다).
 ```
 
-콘텐츠를 직접 고치고 싶다면 `content/` 안의 JSON 파일만 수정하면 됩니다.
-페이지 디자인/구조를 바꾸지 않는 한 html·js 파일은 건드릴 필요 없습니다.
+`/admin`에서 글을 저장하면 위 폴더(`content/notices/` 등)에 파일 하나가
+새로 생기거나 수정되고, Netlify가 `scripts/build_content.py`를 자동으로
+실행해서 목록 JSON을 다시 만들어 배포합니다.
 
 ## 로컬 미리보기
 
-정적 파일이라 그냥 열어도 되지만, `fetch`로 JSON을 불러오므로 반드시
-로컬 서버로 열어야 합니다 (파일을 더블클릭해서 여는 `file://` 방식은 동작하지 않습니다).
+`fetch`로 JSON을 불러오므로 반드시 로컬 서버로 열어야 합니다
+(파일을 더블클릭해서 여는 `file://` 방식은 동작하지 않습니다).
 로그인 버튼(Netlify Identity)은 실제 Netlify에 배포된 사이트에서만 정상 동작합니다.
 
 ```bash
 cd 학회작업
+python3 scripts/build_content.py   # content/*.json 목록 파일 새로 생성
 python3 -m http.server 8080
 ```
 
 이후 브라우저에서 http://localhost:8080 접속.
+`content/board`, `content/notices`, `content/education` 폴더 안의 파일을
+직접 추가/수정한 뒤에는 `build_content.py`를 다시 실행해야 화면에 반영됩니다
+(실제 배포 시에는 Netlify가 자동으로 실행하므로 신경 쓸 필요 없습니다).
 
 ## 무료 배포 (GitHub + Netlify) — 완료된 상태
 
 1. GitHub 저장소 생성 및 push 완료
 2. Netlify 연결 완료 (https://empkkorea.netlify.app)
+3. Build command로 `python3 scripts/build_content.py` 설정됨 (netlify.toml)
 
 코드를 수정한 뒤에는:
 ```bash
@@ -52,7 +64,7 @@ git add .
 git commit -m "설명"
 git push
 ```
-푸시하면 Netlify가 자동으로 재배포합니다 (1분 이내).
+푸시하면 Netlify가 자동으로 빌드(목록 JSON 생성) 후 재배포합니다 (1~2분).
 
 ## 로그인 / 회원가입 켜기 (Netlify Identity)
 
@@ -86,12 +98,13 @@ git push
 
 ## 콘텐츠 관리 (관리자 로그인 후 `/admin`)
 
-- **학회 소개 / 기본 정보** — 소개글, 연혁, 연락처 수정
-- **임원진 소개** — 이름/직함/소속/약력/사진 추가·수정·삭제
-- **교육안내** — 세미나·워크숍 등 안내 추가·수정·삭제
-- **공지사항** — 새 글 작성, 수정, 삭제
+- **학회 소개 / 기본 정보** — 소개글, 연혁, 연락처 수정 (파일 하나짜리 화면)
+- **임원진 소개 / 공지사항 / 교육안내** — 게시판처럼 글 목록이 뜨고,
+  **New 임원진**(또는 New 공지 등) 버튼으로 새 글 추가, 목록에서 항목 클릭해서
+  개별 수정·삭제 가능
 
-저장 버튼만 누르면 자동으로 GitHub에 커밋되고 사이트에 반영됩니다.
+저장 버튼만 누르면 자동으로 GitHub에 커밋되고, Netlify가 목록을 다시 만들어
+1~2분 안에 사이트에 반영됩니다.
 
 ## 커스텀 도메인 (나중에 필요하면)
 
