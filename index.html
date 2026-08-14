@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>홈 | 학회 홈페이지</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="site-header" id="site-header"></header>
+
+  <section class="hero" id="hero">
+    <div class="container">
+      <h1 id="hero-title">학회 홈페이지</h1>
+      <p id="hero-tagline">잠시만 기다려 주세요...</p>
+    </div>
+  </section>
+
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section-head-row">
+          <h2 class="section-title">공지사항</h2>
+          <a href="/notices.html" class="link-more">전체보기 &rarr;</a>
+        </div>
+        <div class="notice-list" id="recent-notices">
+          <p class="empty-state">불러오는 중...</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" style="padding-top: 0;">
+      <div class="container">
+        <div class="card-grid">
+          <a class="card" href="/about.html">
+            <h3 style="margin-top:0; color: var(--navy);">학회 소개</h3>
+            <p style="color: var(--text-muted); margin-bottom: 0;">학회의 설립 목적과 연혁을 확인하세요.</p>
+          </a>
+          <a class="card" href="/board.html">
+            <h3 style="margin-top:0; color: var(--navy);">임원진 소개</h3>
+            <p style="color: var(--text-muted); margin-bottom: 0;">학회를 이끄는 임원진과 강사진을 소개합니다.</p>
+          </a>
+          <a class="card" href="/notices.html">
+            <h3 style="margin-top:0; color: var(--navy);">공지사항</h3>
+            <p style="color: var(--text-muted); margin-bottom: 0;">학술대회 및 학회 소식을 확인하세요.</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+
+  <script src="/js/site.js"></script>
+  <script src="/js/home.js"></script>
+
+  <!-- 관리자 초대 이메일 링크로 접속 시 로그인 완료 후 자동으로 /admin 으로 이동시켜 줍니다. -->
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script>
+    if (window.netlifyIdentity) {
+      window.netlifyIdentity.on("init", (user) => {
+        if (!user) {
+          window.netlifyIdentity.on("login", () => {
+            document.location.href = "/admin/";
+          });
+        }
+      });
+    }
+  </script>
+</body>
+</html>

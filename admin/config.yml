@@ -1,0 +1,79 @@
+backend:
+  name: git-gateway
+  branch: main
+
+# Netlify Identity(무료)로 로그인한 사용자가 "저장"을 누르면
+# 이 저장소(main 브랜치)에 자동으로 커밋됩니다. 코드를 몰라도 됩니다.
+
+media_folder: "images/uploads"
+public_folder: "/images/uploads"
+
+collections:
+  - name: "site"
+    label: "학회 소개 / 기본 정보"
+    files:
+      - file: "content/site.json"
+        label: "학회 기본 정보"
+        name: "site"
+        fields:
+          - { label: "학회명(국문)", name: "orgName", widget: "string" }
+          - { label: "학회명(영문)", name: "orgNameEn", widget: "string", required: false }
+          - { label: "슬로건/한줄소개", name: "tagline", widget: "string" }
+          - label: "학회 소개"
+            name: "about"
+            widget: "object"
+            fields:
+              - { label: "소개글", name: "intro", widget: "text" }
+              - { label: "설립 목적", name: "purpose", widget: "text" }
+              - { label: "조직 안내", name: "organization", widget: "text", required: false }
+          - label: "연혁"
+            name: "history"
+            widget: "list"
+            summary: "{{year}} - {{event}}"
+            fields:
+              - { label: "연도", name: "year", widget: "string" }
+              - { label: "내용", name: "event", widget: "string" }
+          - label: "연락처"
+            name: "contact"
+            widget: "object"
+            required: false
+            fields:
+              - { label: "이메일", name: "email", widget: "string", required: false }
+              - { label: "전화번호", name: "phone", widget: "string", required: false }
+              - { label: "주소", name: "address", widget: "string", required: false }
+
+  - name: "board"
+    label: "임원진 소개"
+    files:
+      - file: "content/board.json"
+        label: "임원진 목록"
+        name: "board"
+        fields:
+          - label: "임원진/강사"
+            name: "members"
+            widget: "list"
+            summary: "{{title}} - {{name}}"
+            fields:
+              - { label: "이름", name: "name", widget: "string" }
+              - { label: "직함", name: "title", widget: "string" }
+              - { label: "소속", name: "affiliation", widget: "string", required: false }
+              - { label: "약력", name: "bio", widget: "text", required: false }
+              - { label: "사진", name: "photo", widget: "image", required: false }
+
+  - name: "notices"
+    label: "공지사항"
+    files:
+      - file: "content/notices.json"
+        label: "공지사항 목록"
+        name: "notices"
+        fields:
+          - label: "공지"
+            name: "notices"
+            widget: "list"
+            summary: "{{date}} - {{title}}"
+            fields:
+              - { label: "제목", name: "title", widget: "string" }
+              - { label: "식별자(id, 숫자·영문 조합, 중복 금지)", name: "id", widget: "string" }
+              - { label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+              - { label: "분류", name: "category", widget: "select", options: ["일반", "학술대회", "채용", "기타"] }
+              - { label: "내용", name: "body", widget: "text" }
