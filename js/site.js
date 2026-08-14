@@ -111,7 +111,10 @@ function renderAuthArea(user) {
 }
 
 function initAuth() {
-  if (!window.netlifyIdentity) return;
+  if (!window.netlifyIdentity) {
+    renderAuthArea(null);
+    return;
+  }
 
   window.netlifyIdentity.on("init", (user) => {
     renderAuthArea(user);
@@ -119,22 +122,20 @@ function initAuth() {
 
   window.netlifyIdentity.on("login", (user) => {
     renderAuthArea(user);
-    const hash = window.location.hash || "";
-    const isConfirmationFlow =
-      hash.includes("confirmation_token") ||
-      hash.includes("invite_token") ||
-      hash.includes("recovery_token");
     window.netlifyIdentity.close();
-    if (isConfirmationFlow) {
-      window.location.href = isAdmin(user) ? "/admin/" : "/index.html";
-    }
   });
 
   window.netlifyIdentity.on("logout", () => {
     renderAuthArea(null);
   });
 
-  window.netlifyIdentity.init();
+  // The CDN widget initializes itself on load. Calling init() again spawns a
+  // second iframe that covers the page and swallows every click.
+  if (!document.getElementById("netlify-identity-widget")) {
+    window.netlifyIdentity.init();
+  }
+
+  renderAuthArea(window.netlifyIdentity.currentUser());
 }
 
 async function initLayout() {
@@ -148,7 +149,6 @@ async function initLayout() {
     renderHeader("학회", "");
     renderFooter("학회", {});
   }
-  renderAuthArea(null);
   initAuth();
   return site;
 }
