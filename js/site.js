@@ -60,16 +60,32 @@ function renderHeader(orgName, orgNameEn) {
   });
 }
 
-function renderFooter(orgName, contact) {
+function socialLinks(social) {
+  if (!social) return [];
+  const links = [];
+  if (social.facebook) links.push({ href: social.facebook, label: "페이스북" });
+  if (social.naverCafe) links.push({ href: social.naverCafe, label: "네이버 카페" });
+  return links;
+}
+
+function renderFooter(orgName, contact, social) {
   const parts = [];
   if (contact && contact.email) parts.push(`이메일 ${escapeHtml(contact.email)}`);
   if (contact && contact.phone) parts.push(`전화 ${escapeHtml(contact.phone)}`);
   if (contact && contact.address) parts.push(escapeHtml(contact.address));
 
+  const links = socialLinks(social)
+    .map(
+      (l) =>
+        `<a href="${escapeHtml(l.href)}" target="_blank" rel="noopener noreferrer">${l.label}</a>`
+    )
+    .join("");
+
   document.getElementById("site-footer").innerHTML = `
     <div class="container">
       <span>&copy; ${new Date().getFullYear()} ${escapeHtml(orgName)}. All rights reserved.</span>
       <span>${parts.join(" · ")}</span>
+      ${links ? `<span class="footer-social">${links}</span>` : ""}
     </div>
   `;
 }
@@ -146,11 +162,11 @@ async function initLayout() {
   try {
     site = await fetchJSON("/content/site.json");
     renderHeader(site.orgName, site.orgNameEn);
-    renderFooter(site.orgName, site.contact);
+    renderFooter(site.orgName, site.contact, site.social);
   } catch (e) {
     console.error(e);
     renderHeader("학회", "");
-    renderFooter("학회", {});
+    renderFooter("학회", {}, null);
   }
   initAuth();
   return site;

@@ -4,6 +4,25 @@
     document.getElementById("hero-title").textContent = site.orgName;
     document.getElementById("hero-tagline").textContent = site.tagline || "";
     document.title = `홈 | ${site.orgName}`;
+
+    const links = socialLinks(site.social);
+    if (links.length) {
+      const descriptions = {
+        페이스북: "학회 소식과 활동 사진을 확인하실 수 있습니다.",
+        "네이버 카페": "회원 간 자료 공유와 소통이 이루어지는 공간입니다.",
+      };
+      document.getElementById("social-links").innerHTML = links
+        .map(
+          (l) => `
+        <a class="card social-card" href="${escapeHtml(l.href)}" target="_blank" rel="noopener noreferrer">
+          <h3>${l.label}</h3>
+          <p>${escapeHtml(descriptions[l.label] || "")}</p>
+          <span class="social-go">바로가기 &rarr;</span>
+        </a>`
+        )
+        .join("");
+      document.getElementById("social-section").style.display = "";
+    }
   }
 
   try {

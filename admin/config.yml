@@ -45,6 +45,13 @@ collections:
               - { label: "이메일", name: "email", widget: "string", required: false }
               - { label: "전화번호", name: "phone", widget: "string", required: false }
               - { label: "주소", name: "address", widget: "string", required: false }
+          - label: "학회 채널 (비워두면 화면에 표시되지 않습니다)"
+            name: "social"
+            widget: "object"
+            required: false
+            fields:
+              - { label: "페이스북 주소", name: "facebook", widget: "string", required: false }
+              - { label: "네이버 카페 주소", name: "naverCafe", widget: "string", required: false }
 
   - name: "board"
     label: "임원진 소개"
