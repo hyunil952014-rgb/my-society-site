@@ -454,6 +454,42 @@ img { max-width: 100%; display: block; }
   padding: 24px 4px;
 }
 
+/* Home board columns */
+.board-columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+}
+
+@media (max-width: 860px) {
+  .board-columns {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+}
+
+/* Compact rows used in the narrower home columns */
+.notice-list.compact .notice-row {
+  gap: 12px;
+  padding: 14px 2px;
+}
+
+.notice-list.compact .notice-category {
+  font-size: 0.72rem;
+  padding: 3px 8px;
+}
+
+.notice-list.compact .notice-title {
+  font-size: 0.94rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notice-list.compact .notice-date {
+  font-size: 0.8rem;
+}
+
 /* Social channels */
 .social-grid {
   display: grid;
