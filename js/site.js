@@ -41,8 +41,11 @@ function renderHeader(orgName, orgNameEn) {
   document.getElementById("site-header").innerHTML = `
     <div class="container">
       <a href="/index.html" class="brand">
-        ${escapeHtml(orgName)}
-        <small>${escapeHtml(orgNameEn || "")}</small>
+        <img src="/images/logo-mark.png" alt="" class="brand-mark" />
+        <span class="brand-text">
+          ${escapeHtml(orgName)}
+          <small>${escapeHtml(orgNameEn || "")}</small>
+        </span>
       </a>
       <nav class="nav" id="site-nav">
         ${navHtml}
