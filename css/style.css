@@ -58,11 +58,24 @@ img { max-width: 100%; display: block; }
   font-weight: 700;
   letter-spacing: -0.01em;
   line-height: 1.25;
+  /* Shrink and truncate rather than overflowing across the nav. */
   min-width: 0;
+  flex: 0 1 auto;
+  overflow: hidden;
 }
 
 .brand-text {
+  display: block;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.brand-name,
+.brand small {
+  display: block;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .brand-mark {
@@ -73,11 +86,16 @@ img { max-width: 100%; display: block; }
 }
 
 .brand small {
-  display: block;
   font-weight: 400;
   font-size: 0.68rem;
   color: #c3d6de;
   letter-spacing: 0.01em;
+}
+
+/* The English subtitle is the widest part of the brand; drop it first so the
+   nav keeps its room on laptop widths (especially when logged in). */
+@media (max-width: 1400px) {
+  .brand small { display: none; }
 }
 
 @media (max-width: 520px) {
@@ -93,6 +111,7 @@ img { max-width: 100%; display: block; }
 .nav {
   display: flex;
   gap: 8px;
+  flex: 0 0 auto;
 }
 
 .nav a {
@@ -134,6 +153,10 @@ img { max-width: 100%; display: block; }
 .auth-area .auth-user {
   color: #cdd7e2;
   white-space: nowrap;
+  /* Email addresses can be long; keep them from pushing the nav around. */
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .auth-btn {

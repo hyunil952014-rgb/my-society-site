@@ -43,7 +43,7 @@ function renderHeader(orgName, orgNameEn) {
       <a href="/index.html" class="brand">
         <img src="/images/logo-mark.png" alt="" class="brand-mark" />
         <span class="brand-text">
-          ${escapeHtml(orgName)}
+          <span class="brand-name">${escapeHtml(orgName)}</span>
           <small>${escapeHtml(orgNameEn || "")}</small>
         </span>
       </a>
@@ -114,7 +114,11 @@ function renderAuthArea(user) {
     return;
   }
 
-  const displayName = (user.user_metadata && user.user_metadata.full_name) || user.email;
+  // Fall back to the local part of the email — a full address is long enough
+  // to squeeze the nav out of the header.
+  const displayName =
+    (user.user_metadata && user.user_metadata.full_name) ||
+    String(user.email || "").split("@")[0];
   const adminLink = isAdmin(user)
     ? `<a href="/admin/" class="auth-link admin-link">사이트 편집</a>`
     : "";
