@@ -23,6 +23,10 @@ collections:
           - { label: "학회명(국문)", name: "orgName", widget: "string" }
           - { label: "학회명(영문)", name: "orgNameEn", widget: "string", required: false }
           - { label: "슬로건/한줄소개", name: "tagline", widget: "string" }
+          - label: "메인 화면 소개글 (홈 상단에 표시, 3~4줄 권장)"
+            name: "homeIntro"
+            widget: "text"
+            required: false
           - label: "학회 소개"
             name: "about"
             widget: "object"
@@ -62,10 +66,11 @@ collections:
     format: "json"
     slug: "{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}"
     identifier_field: "name"
-    summary: "{{title}} - {{name}}"
+    summary: "[{{group}}] {{title}} - {{name}}"
     fields:
       - { label: "이름", name: "name", widget: "string" }
       - { label: "직함", name: "title", widget: "string" }
+      - { label: "구분", name: "group", widget: "select", options: ["회장단", "이사진"], default: "이사진" }
       - { label: "소속", name: "affiliation", widget: "string", required: false }
       - { label: "약력", name: "bio", widget: "text", required: false }
       - { label: "사진", name: "photo", widget: "image", required: false }
