@@ -1,14 +1,41 @@
 // Shared header/footer rendering, auth (Netlify Identity), and small utilities
 // used across all pages.
 
+// Top-level menus; anything with `children` renders as a dropdown.
 const NAV_ITEMS = [
   { href: "/index.html", label: "홈" },
-  { href: "/about.html", label: "학회 소개" },
-  { href: "/board.html", label: "임원진 소개" },
-  { href: "/education.html", label: "교육안내" },
-  { href: "/notices.html", label: "공지사항" },
-  { href: "/resources.html", label: "자료실" },
+  {
+    label: "학회소개",
+    children: [
+      { href: "/about.html#greeting", label: "인사말" },
+      { href: "/about.html#intro", label: "학회 소개" },
+      { href: "/about.html#history", label: "연혁" },
+      { href: "/about.html#office", label: "사무국 안내" },
+      { href: "/about.html#documents", label: "정관·규정" },
+      { href: "/board.html", label: "임원진 소개" },
+    ],
+  },
+  {
+    label: "학술행사",
+    children: [
+      { href: "/conference.html", label: "학술대회" },
+      { href: "/education.html", label: "교육안내" },
+    ],
+  },
+  {
+    label: "알림마당",
+    children: [
+      { href: "/notices.html", label: "공지사항" },
+      { href: "/resources.html", label: "자료실" },
+      { href: "/gallery.html", label: "갤러리" },
+    ],
+  },
 ];
+
+// "/about.html#office" -> "/about.html"
+function hrefPath(href) {
+  return href.split("#")[0];
+}
 
 function escapeHtml(str) {
   if (str == null) return "";
@@ -34,12 +61,33 @@ function currentPath() {
 
 function renderHeader(orgName, orgNameEn) {
   const active = currentPath();
-  const navHtml = NAV_ITEMS.map(
-    (item) =>
-      `<a href="${item.href}" class="${item.href === active ? "active" : ""}">${item.label}</a>`
-  ).join("");
+
+  const navHtml = NAV_ITEMS.map((item, i) => {
+    if (!item.children) {
+      return `<a href="${item.href}" class="nav-link ${
+        hrefPath(item.href) === active ? "active" : ""
+      }">${item.label}</a>`;
+    }
+    const isActive = item.children.some((c) => hrefPath(c.href) === active);
+    const menuId = `nav-menu-${i}`;
+    const items = item.children
+      .map(
+        (c) =>
+          `<a href="${c.href}" class="${hrefPath(c.href) === active ? "active" : ""}" role="menuitem">${c.label}</a>`
+      )
+      .join("");
+    return `
+      <div class="nav-group" data-nav-group>
+        <button type="button" class="nav-link nav-trigger ${isActive ? "active" : ""}"
+                aria-expanded="false" aria-controls="${menuId}" aria-haspopup="true">
+          ${item.label}<span class="nav-caret" aria-hidden="true">▾</span>
+        </button>
+        <div class="nav-menu" id="${menuId}" role="menu">${items}</div>
+      </div>`;
+  }).join("");
 
   document.getElementById("site-header").innerHTML = `
+    <a class="skip-link" href="#main">본문 바로가기</a>
     <div class="container">
       <a href="/index.html" class="brand">
         <img src="/images/logo-mark.png" alt="" class="brand-mark" />
@@ -48,16 +96,45 @@ function renderHeader(orgName, orgNameEn) {
           <small>${escapeHtml(orgNameEn || "")}</small>
         </span>
       </a>
-      <nav class="nav" id="site-nav">
+      <nav class="nav" id="site-nav" aria-label="주 메뉴">
         ${navHtml}
         <span class="auth-area" id="auth-area"></span>
       </nav>
-      <button class="nav-toggle" id="nav-toggle" aria-label="메뉴 열기">&#9776;</button>
+      <button class="nav-toggle" id="nav-toggle" aria-label="메뉴 열기" aria-expanded="false">&#9776;</button>
     </div>
   `;
 
-  document.getElementById("nav-toggle").addEventListener("click", () => {
-    document.getElementById("site-nav").classList.toggle("open");
+  const nav = document.getElementById("site-nav");
+  const toggle = document.getElementById("nav-toggle");
+  toggle.addEventListener("click", () => {
+    const open = nav.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+
+  const groups = [...document.querySelectorAll("[data-nav-group]")];
+
+  function closeAll(except) {
+    groups.forEach((g) => {
+      if (g === except) return;
+      g.classList.remove("open");
+      g.querySelector(".nav-trigger").setAttribute("aria-expanded", "false");
+    });
+  }
+
+  groups.forEach((group) => {
+    const trigger = group.querySelector(".nav-trigger");
+    trigger.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const open = !group.classList.contains("open");
+      closeAll(group);
+      group.classList.toggle("open", open);
+      trigger.setAttribute("aria-expanded", String(open));
+    });
+  });
+
+  document.addEventListener("click", () => closeAll(null));
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeAll(null);
   });
 }
 

@@ -3,6 +3,57 @@
 
 const PAGE_SIZE = 15;
 
+function isLoggedIn() {
+  return !!(window.netlifyIdentity && window.netlifyIdentity.currentUser());
+}
+
+// Members-only posts hide their attachments from signed-out visitors.
+// Note: this is an interface restriction, not file-level security — see README.
+function membersNoticeHtml() {
+  return `
+    <div class="members-notice">
+      <p>이 자료는 학회 회원에게만 제공됩니다. 로그인 후 첨부파일을 내려받으실 수 있습니다.</p>
+      <button type="button" class="auth-btn" id="members-login-btn">로그인</button>
+      <a class="search-clear" href="/join.html">회원가입 신청</a>
+    </div>`;
+}
+
+// Education and conference posts can collect applications straight from the page.
+// Netlify Forms picks the submission up from the static form in apply.html.
+function applyFormHtml(item) {
+  if (!item.applyEnabled) return "";
+  return `
+    <div class="apply-box">
+      <h3 class="attachments-title">참가 신청</h3>
+      <form name="event-application" method="POST" data-netlify="true"
+            netlify-honeypot="bot-field" action="/apply-success.html" class="apply-form">
+        <input type="hidden" name="form-name" value="event-application" />
+        <input type="hidden" name="행사명" value="${escapeHtml(item.title)}" />
+        <p class="hp-field"><label>비워두세요: <input name="bot-field" /></label></p>
+
+        <label class="form-label" for="apply-name">이름 *</label>
+        <input class="form-input" type="text" id="apply-name" name="이름" required />
+
+        <label class="form-label" for="apply-affiliation">소속 *</label>
+        <input class="form-input" type="text" id="apply-affiliation" name="소속" required />
+
+        <label class="form-label" for="apply-phone">연락처 *</label>
+        <input class="form-input" type="tel" id="apply-phone" name="연락처" required />
+
+        <label class="form-label" for="apply-email">이메일 *</label>
+        <input class="form-input" type="email" id="apply-email" name="이메일" required />
+
+        <label class="form-label" for="apply-memo">남기실 말씀 (선택)</label>
+        <textarea class="form-input" id="apply-memo" name="메모" rows="3"></textarea>
+
+        <p class="form-notice">
+          제출하신 정보는 해당 행사 운영 목적으로만 사용됩니다.
+        </p>
+        <button type="submit" class="form-submit">신청하기</button>
+      </form>
+    </div>`;
+}
+
 function attachmentsHtml(attachments) {
   if (!attachments || !attachments.length) return "";
   const rows = attachments
@@ -83,14 +134,27 @@ function initBoardPage({ path, wrapperKey, page, emptyText, labels }) {
       return;
     }
     document.title = `${item.title} | ${orgName}`;
+    const locked = item.membersOnly && !isLoggedIn();
     container.innerHTML = `
       <a class="back-link" href="${page}">&larr; 목록으로</a>
       <article class="notice-detail">
-        <h2>${escapeHtml(item.title)}</h2>
+        <h2>${item.membersOnly ? '<span class="members-badge">회원전용</span>' : ""}${escapeHtml(item.title)}</h2>
         <div class="notice-meta">${escapeHtml(item.category || "")} · ${escapeHtml(item.date)}</div>
         <div class="notice-body rich">${item.bodyHtml || ""}</div>
-        ${attachmentsHtml(item.attachments)}
+        ${locked ? membersNoticeHtml() : attachmentsHtml(item.attachments)}
+        ${applyFormHtml(item)}
       </article>`;
+
+    const loginBtn = document.getElementById("members-login-btn");
+    if (loginBtn) {
+      loginBtn.addEventListener("click", () => {
+        window.netlifyIdentity && window.netlifyIdentity.open("login");
+      });
+    }
+    // Re-render once Identity reports a signed-in user so the files appear.
+    if (locked && window.netlifyIdentity) {
+      window.netlifyIdentity.on("login", () => renderDetail(item, orgName));
+    }
   }
 
   function renderList(allItems, query, pageNum) {
@@ -123,6 +187,7 @@ function initBoardPage({ path, wrapperKey, page, emptyText, labels }) {
         <span class="notice-category">${escapeHtml(n.category || "일반")}</span>
         <span class="notice-title">
           ${n.pinned ? '<span class="pin-badge">중요</span>' : ""}
+          ${n.membersOnly ? '<span class="members-badge">회원전용</span>' : ""}
           ${escapeHtml(n.title)}
           ${n.attachments && n.attachments.length ? '<span class="attach-mark" title="첨부파일 있음">📎</span>' : ""}
         </span>

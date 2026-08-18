@@ -11,11 +11,14 @@ JSON 파일에서 불러옵니다.
 index.html               홈
 about.html                학회 소개 (인사말·설립목적·연혁·사무국·정관)
 board.html                임원진 소개 (회장단 / 이사진)
+conference.html           학술대회 (목록 + 상세)
 education.html            교육안내 (목록 + 상세)
 notices.html              공지사항 (목록 + 상세)
 resources.html            자료실 (목록 + 상세)
+gallery.html              갤러리 (앨범별 사진)
 join.html                  회원가입 신청서 (Netlify Forms로 접수)
 join-success.html          가입 신청 완료 안내
+apply-success.html         행사 참가 신청 완료 안내 (+ Netlify Forms 감지용 폼)
 404.html                   없는 주소로 들어왔을 때 표시되는 페이지
 robots.txt, sitemap.xml    검색엔진 안내 파일
 css/style.css              디자인
@@ -32,8 +35,11 @@ content/board/*.json        임원진 — 한 명당 파일 하나
 content/notices/*.json      공지사항 — 글 하나당 파일 하나
 content/education/*.json    교육안내 — 글 하나당 파일 하나
 content/resources/*.json    자료실 — 글 하나당 파일 하나
+content/conference/*.json   학술대회 — 글 하나당 파일 하나
+content/gallery/*.json      갤러리 — 앨범 하나당 파일 하나
 
-content/board.json, notices.json, education.json, resources.json
+content/board.json, notices.json, education.json, resources.json,
+conference.json, gallery.json
   → 위 폴더 내용을 합쳐서 자동 생성되는 파일. 사이트는 이 파일들을 읽습니다.
     직접 수정하지 마세요 (배포할 때마다 덮어써집니다).
 ```
@@ -128,6 +134,47 @@ git push
 `/admin` → 학회 기본 정보 → **정관 및 규정** 에서 문서 이름과 파일을 추가하면
 학회 소개 페이지에 다운로드 목록이 생깁니다. 하나도 없으면 그 항목은
 페이지에서 자동으로 숨겨집니다. (인사말·사무국 안내도 마찬가지)
+
+### 참가 신청 받기
+
+교육안내·학술대회 글에서 **"이 페이지에서 참가 신청 받기"** 를 켜면 글 아래에
+신청 폼이 생깁니다. 신청 내용은 Netlify 대시보드 **Forms → event-application**
+에 쌓이며, 어떤 행사에 대한 신청인지 "행사명" 항목으로 구분됩니다.
+
+새 신청이 올 때 메일을 받으려면 Netlify **Site configuration → Forms →
+Form notifications** 에서 알림을 추가하세요. (회원가입 폼과 별도로 설정해야 합니다)
+
+### 회원 전용 자료 — 중요한 한계
+
+자료실 글에 **"회원 전용"** 을 켜면 로그인하지 않은 방문자에게는 첨부파일이
+보이지 않고 로그인 안내가 대신 표시됩니다.
+
+다만 이것은 **화면에서 가리는 수준의 제한**입니다. 파일 자체는 여전히
+`https://.../files/uploads/파일이름` 주소를 정확히 아는 사람이라면 로그인 없이
+받을 수 있습니다. 파일 주소를 서버에서 막으려면 Netlify의 유료(Enterprise)
+기능이 필요합니다.
+
+따라서 **외부에 유출되면 곤란한 자료(개인정보, 미공개 논문, 계약서 등)는
+올리지 마세요.** "회원 전용"은 비회원이 굳이 찾아 쓰지 않도록 하는 용도로만
+쓰시고, 민감한 자료는 이메일로 개별 발송하시는 편이 안전합니다.
+
+## 실수로 지운 글 되살리기
+
+`/admin`에서 글을 지워도 GitHub에 기록이 남아 있어 복구할 수 있습니다.
+
+1. GitHub 저장소 → **Commits** (커밋 목록) 열기
+2. 글을 지운 시점의 커밋을 찾습니다 (메시지에 파일 이름이 보입니다)
+3. 그 커밋을 클릭하면 삭제된 파일 내용이 빨간색으로 보입니다
+4. 내용을 복사해서 `/admin`에서 같은 제목으로 새 글을 만들어 붙여넣으면 됩니다
+
+파일을 통째로 되돌리려면 터미널에서:
+
+```bash
+git log --oneline -- content/notices
+git checkout <커밋해시> -- content/notices/파일이름.json
+git commit -m "실수로 지운 공지 복구"
+git push
+```
 
 ## 검색엔진 · 링크 공유
 

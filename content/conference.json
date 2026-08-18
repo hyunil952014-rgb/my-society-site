@@ -1,0 +1,15 @@
+{
+  "items": [
+    {
+      "title": "제1회 정기 학술대회",
+      "date": "2026-09-01",
+      "category": "정기 학술대회",
+      "pinned": false,
+      "attachments": [],
+      "applyEnabled": false,
+      "id": "20260901120000",
+      "bodyHtml": "<p>근거중심도수물리치료한국학회 제1회 정기 학술대회를 준비하고 있습니다.</p>\n<h3>일정</h3>\n<ul>\n<li>일시: 추후 공지</li>\n<li>장소: 추후 공지</li>\n</ul>\n<h3>등록 안내</h3>\n<p>사전등록 일정과 참가비는 확정되는 대로 안내드리겠습니다.</p>",
+      "membersOnly": false
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>신청 완료 | 근거중심도수물리치료한국학회</title>
+  <meta name="robots" content="noindex" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png" />
+  <link rel="apple-touch-icon" href="/images/favicon-180.png" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <header class="site-header" id="site-header"></header>
+
+  <section class="hero">
+    <div class="container">
+      <h1>신청이 접수되었습니다</h1>
+      <p>확인 후 입력하신 연락처로 안내드리겠습니다. 감사합니다.</p>
+    </div>
+  </section>
+
+  <main id="main">
+    <section class="section">
+      <div class="container" style="max-width: 560px; text-align: center;">
+        <a href="/index.html" class="link-more">홈으로 돌아가기 &rarr;</a>
+      </div>
+    </section>
+  </main>
+
+  <!--
+    Netlify Forms only registers forms that exist in the built HTML, and the
+    participation form is injected by JavaScript on each event page. This
+    hidden copy declares the same field names so submissions are accepted.
+  -->
+  <form name="event-application" data-netlify="true" netlify-honeypot="bot-field" hidden>
+    <input type="hidden" name="form-name" value="event-application" />
+    <input name="bot-field" />
+    <input type="text" name="행사명" />
+    <input type="text" name="이름" />
+    <input type="text" name="소속" />
+    <input type="tel" name="연락처" />
+    <input type="email" name="이메일" />
+    <textarea name="메모"></textarea>
+  </form>
+
+  <footer class="site-footer" id="site-footer"></footer>
+
+  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+  <script src="/js/site.js"></script>
+  <script>
+    initLayout();
+  </script>
+</body>
+</html>

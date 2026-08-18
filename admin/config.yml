@@ -126,6 +126,7 @@ collections:
       - { label: "제목", name: "title", widget: "string" }
       - { label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
       - { label: "분류", name: "category", widget: "select", options: ["강의 안내", "워크숍", "세미나", "기타"] }
+      - { label: "이 페이지에서 참가 신청 받기 (신청 폼이 글 아래에 표시됩니다)", name: "applyEnabled", widget: "boolean", default: false, required: false }
       - { label: "중요 공지로 목록 맨 위에 고정", name: "pinned", widget: "boolean", default: false, required: false }
       - { label: "내용", name: "body", widget: "markdown" }
       - label: "첨부파일"
@@ -152,6 +153,7 @@ collections:
       - { label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
       - { label: "분류", name: "category", widget: "select", options: ["서식", "학술자료", "발표자료", "기타"] }
       - { label: "중요 자료로 목록 맨 위에 고정", name: "pinned", widget: "boolean", default: false, required: false }
+      - { label: "회원 전용 (로그인한 회원만 첨부파일을 받을 수 있습니다)", name: "membersOnly", widget: "boolean", default: false, required: false }
       - { label: "설명", name: "body", widget: "markdown" }
       - label: "첨부파일"
         name: "attachments"
@@ -161,3 +163,52 @@ collections:
         fields:
           - { label: "파일 이름 (비워두면 파일명 그대로)", name: "name", widget: "string", required: false }
           - { label: "파일", name: "file", widget: "file", media_folder: "/files/uploads", public_folder: "/files/uploads" }
+
+  - name: "conference"
+    label: "학술대회"
+    folder: "content/conference"
+    create: true
+    delete: true
+    extension: "json"
+    format: "json"
+    slug: "{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}"
+    identifier_field: "title"
+    summary: "{{date}} - {{title}}"
+    fields:
+      - { label: "제목", name: "title", widget: "string" }
+      - { label: "개최일 (다가오는 일정 계산에 쓰입니다)", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+      - { label: "분류", name: "category", widget: "select", options: ["정기 학술대회", "특별 세미나", "공동 학술대회", "기타"] }
+      - { label: "이 페이지에서 참가 신청 받기 (신청 폼이 글 아래에 표시됩니다)", name: "applyEnabled", widget: "boolean", default: false, required: false }
+      - { label: "중요 안내로 목록 맨 위에 고정", name: "pinned", widget: "boolean", default: false, required: false }
+      - { label: "내용 (일정·프로그램·등록 안내)", name: "body", widget: "markdown" }
+      - label: "첨부파일 (프로그램, 초록 양식 등)"
+        name: "attachments"
+        widget: "list"
+        required: false
+        summary: "{{name}}"
+        fields:
+          - { label: "파일 이름 (비워두면 파일명 그대로)", name: "name", widget: "string", required: false }
+          - { label: "파일", name: "file", widget: "file", media_folder: "/files/uploads", public_folder: "/files/uploads" }
+
+  - name: "gallery"
+    label: "갤러리"
+    folder: "content/gallery"
+    create: true
+    delete: true
+    extension: "json"
+    format: "json"
+    slug: "{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}"
+    identifier_field: "title"
+    summary: "{{date}} - {{title}}"
+    fields:
+      - { label: "앨범 제목", name: "title", widget: "string" }
+      - { label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+      - { label: "설명", name: "body", widget: "markdown", required: false }
+      - label: "사진"
+        name: "photos"
+        widget: "list"
+        required: false
+        summary: "{{caption}}"
+        fields:
+          - { label: "사진", name: "image", widget: "image" }
+          - { label: "설명 (선택)", name: "caption", widget: "string", required: false }

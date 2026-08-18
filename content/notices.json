@@ -7,7 +7,8 @@
       "pinned": true,
       "attachments": [],
       "id": "20260901090000",
-      "bodyHtml": "<p>근거중심도수물리치료한국학회 <strong>제1회 정기 학술대회</strong>를 아래와 같이 개최할 예정입니다.</p>\n<h3>개요</h3>\n<ul>\n<li>일시: 추후 공지</li>\n<li>장소: 추후 공지</li>\n<li>대상: 학회 회원 및 관심 있는 물리치료사</li>\n</ul>\n<h3>참가 신청</h3>\n<p>참가 신청 방법과 사전등록 일정은 확정되는 대로 이 게시판을 통해 안내드리겠습니다.</p>\n<blockquote>문의: empkkorea7@gmail.com</blockquote>\n<p>자세한 학회 소개는 <a href=\"/about.html\">학회 소개</a> 페이지를 참고해 주세요.</p>"
+      "bodyHtml": "<p>근거중심도수물리치료한국학회 <strong>제1회 정기 학술대회</strong>를 아래와 같이 개최할 예정입니다.</p>\n<h3>개요</h3>\n<ul>\n<li>일시: 추후 공지</li>\n<li>장소: 추후 공지</li>\n<li>대상: 학회 회원 및 관심 있는 물리치료사</li>\n</ul>\n<h3>참가 신청</h3>\n<p>참가 신청 방법과 사전등록 일정은 확정되는 대로 이 게시판을 통해 안내드리겠습니다.</p>\n<blockquote>문의: empkkorea7@gmail.com</blockquote>\n<p>자세한 학회 소개는 <a href=\"/about.html\">학회 소개</a> 페이지를 참고해 주세요.</p>",
+      "membersOnly": false
     },
     {
       "title": "학회 홈페이지를 새롭게 개설했습니다",
@@ -16,7 +17,8 @@
       "id": "20260814090000",
       "bodyHtml": "<p>안녕하세요, 근거중심도수물리치료한국학회(EMPK)입니다. 회원 여러분과의 소통을 위해 학회 홈페이지를 새롭게 개설하였습니다. 앞으로 학회 소식, 학술대회 및 교육 일정을 이 곳에서 확인하실 수 있습니다.</p>",
       "attachments": [],
-      "pinned": false
+      "pinned": false,
+      "membersOnly": false
     }
   ]
 }

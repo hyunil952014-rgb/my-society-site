@@ -34,7 +34,20 @@ def normalise_attachments(data):
     return out
 
 
-def build(folder_name, wrapper_key, sort_key=None, reverse=True, render_body=True):
+def normalise_photos(data):
+    out = []
+    for item in data.get("photos") or []:
+        if not isinstance(item, dict):
+            continue
+        image = (item.get("image") or "").strip()
+        if not image:
+            continue
+        out.append({"image": image, "caption": (item.get("caption") or "").strip()})
+    return out
+
+
+def build(folder_name, wrapper_key, sort_key=None, reverse=True, render_body=True,
+          photos=False):
     folder = os.path.join(CONTENT_DIR, folder_name)
     items = []
     for path in sorted(glob.glob(os.path.join(folder, "*.json"))):
@@ -48,6 +61,10 @@ def build(folder_name, wrapper_key, sort_key=None, reverse=True, render_body=Tru
             data.pop("body", None)
             data["attachments"] = normalise_attachments(data)
             data["pinned"] = bool(data.get("pinned"))
+            data["membersOnly"] = bool(data.get("membersOnly"))
+
+        if photos:
+            data["photos"] = normalise_photos(data)
 
         items.append(data)
 
@@ -68,4 +85,6 @@ if __name__ == "__main__":
     build("notices", "notices", sort_key="date")
     build("education", "items", sort_key="date")
     build("resources", "items", sort_key="date")
+    build("conference", "items", sort_key="date")
+    build("gallery", "items", sort_key="date", photos=True)
     build("board", "members", render_body=False)

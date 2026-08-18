@@ -6,5 +6,7 @@
   <url><loc>https://empkkorea.netlify.app/education.html</loc><priority>0.8</priority></url>
   <url><loc>https://empkkorea.netlify.app/notices.html</loc><priority>0.8</priority></url>
   <url><loc>https://empkkorea.netlify.app/resources.html</loc><priority>0.7</priority></url>
+  <url><loc>https://empkkorea.netlify.app/conference.html</loc><priority>0.8</priority></url>
+  <url><loc>https://empkkorea.netlify.app/gallery.html</loc><priority>0.6</priority></url>
   <url><loc>https://empkkorea.netlify.app/join.html</loc><priority>0.6</priority></url>
 </urlset>
