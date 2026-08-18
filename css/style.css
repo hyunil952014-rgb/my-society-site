@@ -611,6 +611,91 @@ img { max-width: 100%; display: block; }
   margin-right: 10px;
 }
 
+/* In-page sub navigation (학회 소개) */
+.subnav {
+  position: sticky;
+  top: 68px;
+  z-index: 9;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+}
+
+.subnav .container {
+  display: flex;
+  gap: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.subnav .container::-webkit-scrollbar { display: none; }
+
+.subnav a {
+  flex: 0 0 auto;
+  padding: 14px 14px;
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  white-space: nowrap;
+}
+.subnav a:hover {
+  color: var(--navy);
+  border-bottom-color: var(--border);
+}
+
+/* Anchor targets must clear both sticky bars. */
+main section[id] {
+  scroll-margin-top: 124px;
+}
+.about-block[id] {
+  scroll-margin-top: 124px;
+}
+
+/* Greeting */
+.greeting p {
+  white-space: pre-wrap;
+  line-height: 1.9;
+  margin: 0 0 16px;
+}
+
+.greeting-sign {
+  text-align: right;
+  font-weight: 600;
+  color: var(--navy);
+  white-space: normal !important;
+}
+
+/* Definition-style info rows (사무국 안내) */
+.info-list {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 10px 16px;
+  margin: 0 0 16px;
+}
+
+.info-list dt {
+  font-weight: 600;
+  color: var(--navy);
+  font-size: 0.94rem;
+}
+
+.info-list dd {
+  margin: 0;
+  font-size: 0.94rem;
+  word-break: break-word;
+}
+
+.info-list dd a { color: var(--navy); text-decoration: underline; }
+
+@media (max-width: 520px) {
+  .info-list { grid-template-columns: 84px 1fr; gap: 8px 12px; }
+}
+
+.office-note {
+  color: var(--text-muted);
+  font-size: 0.92rem;
+  margin: 0;
+}
+
 /* About */
 .about-block {
   margin-bottom: 32px;
@@ -647,6 +732,25 @@ img { max-width: 100%; display: block; }
   color: var(--text-muted);
   padding: 24px 4px;
 }
+
+/* 404 page shortcuts */
+.notfound-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.notfound-links a {
+  padding: 10px 18px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--card-bg);
+  font-size: 0.94rem;
+  font-weight: 600;
+  color: var(--navy);
+}
+.notfound-links a:hover { border-color: var(--navy); background: #fff; }
 
 /* Home intro summary */
 .intro-section {

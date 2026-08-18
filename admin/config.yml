@@ -31,6 +31,8 @@ collections:
             name: "about"
             widget: "object"
             fields:
+              - { label: "인사말 (비워두면 인사말 항목이 숨겨집니다)", name: "greeting", widget: "text", required: false }
+              - { label: "인사말 서명 (예: 근거중심도수물리치료한국학회 회장 홍길동)", name: "greetingSignature", widget: "string", required: false }
               - { label: "소개글", name: "intro", widget: "text" }
               - { label: "설립 목적", name: "purpose", widget: "text" }
               - { label: "조직 안내", name: "organization", widget: "text", required: false }
@@ -41,7 +43,7 @@ collections:
             fields:
               - { label: "연도", name: "year", widget: "string" }
               - { label: "내용", name: "event", widget: "string" }
-          - label: "연락처"
+          - label: "연락처 / 사무국 안내"
             name: "contact"
             widget: "object"
             required: false
@@ -49,6 +51,16 @@ collections:
               - { label: "이메일", name: "email", widget: "string", required: false }
               - { label: "전화번호", name: "phone", widget: "string", required: false }
               - { label: "주소", name: "address", widget: "string", required: false }
+              - { label: "운영 시간 (예: 평일 09:00~18:00)", name: "officeHours", widget: "string", required: false }
+              - { label: "안내 문구", name: "officeNote", widget: "text", required: false }
+          - label: "정관 및 규정 (파일을 올리면 학회 소개 페이지에 다운로드 목록이 표시됩니다)"
+            name: "documents"
+            widget: "list"
+            required: false
+            summary: "{{name}}"
+            fields:
+              - { label: "문서 이름 (예: 학회 정관)", name: "name", widget: "string" }
+              - { label: "파일", name: "file", widget: "file", media_folder: "/files/uploads", public_folder: "/files/uploads" }
           - label: "학회 채널 (비워두면 화면에 표시되지 않습니다)"
             name: "social"
             widget: "object"
