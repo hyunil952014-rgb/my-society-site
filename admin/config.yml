@@ -89,7 +89,16 @@ collections:
       - { label: "제목", name: "title", widget: "string" }
       - { label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
       - { label: "분류", name: "category", widget: "select", options: ["일반", "학술대회", "채용", "기타"] }
-      - { label: "내용", name: "body", widget: "text" }
+      - { label: "중요 공지로 목록 맨 위에 고정", name: "pinned", widget: "boolean", default: false, required: false }
+      - { label: "내용", name: "body", widget: "markdown" }
+      - label: "첨부파일"
+        name: "attachments"
+        widget: "list"
+        required: false
+        summary: "{{name}}"
+        fields:
+          - { label: "파일 이름 (비워두면 파일명 그대로)", name: "name", widget: "string", required: false }
+          - { label: "파일", name: "file", widget: "file", media_folder: "/files/uploads", public_folder: "/files/uploads" }
 
   - name: "education"
     label: "교육안내"
@@ -105,4 +114,38 @@ collections:
       - { label: "제목", name: "title", widget: "string" }
       - { label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
       - { label: "분류", name: "category", widget: "select", options: ["강의 안내", "워크숍", "세미나", "기타"] }
-      - { label: "내용", name: "body", widget: "text" }
+      - { label: "중요 공지로 목록 맨 위에 고정", name: "pinned", widget: "boolean", default: false, required: false }
+      - { label: "내용", name: "body", widget: "markdown" }
+      - label: "첨부파일"
+        name: "attachments"
+        widget: "list"
+        required: false
+        summary: "{{name}}"
+        fields:
+          - { label: "파일 이름 (비워두면 파일명 그대로)", name: "name", widget: "string", required: false }
+          - { label: "파일", name: "file", widget: "file", media_folder: "/files/uploads", public_folder: "/files/uploads" }
+
+  - name: "resources"
+    label: "자료실"
+    folder: "content/resources"
+    create: true
+    delete: true
+    extension: "json"
+    format: "json"
+    slug: "{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}"
+    identifier_field: "title"
+    summary: "{{date}} - {{title}}"
+    fields:
+      - { label: "제목", name: "title", widget: "string" }
+      - { label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+      - { label: "분류", name: "category", widget: "select", options: ["서식", "학술자료", "발표자료", "기타"] }
+      - { label: "중요 자료로 목록 맨 위에 고정", name: "pinned", widget: "boolean", default: false, required: false }
+      - { label: "설명", name: "body", widget: "markdown" }
+      - label: "첨부파일"
+        name: "attachments"
+        widget: "list"
+        required: false
+        summary: "{{name}}"
+        fields:
+          - { label: "파일 이름 (비워두면 파일명 그대로)", name: "name", widget: "string", required: false }
+          - { label: "파일", name: "file", widget: "file", media_folder: "/files/uploads", public_folder: "/files/uploads" }

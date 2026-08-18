@@ -7,6 +7,7 @@ const NAV_ITEMS = [
   { href: "/board.html", label: "임원진 소개" },
   { href: "/education.html", label: "교육안내" },
   { href: "/notices.html", label: "공지사항" },
+  { href: "/resources.html", label: "자료실" },
 ];
 
 function escapeHtml(str) {
