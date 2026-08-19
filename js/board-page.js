@@ -28,6 +28,7 @@ function applyFormHtml(item) {
       <form name="event-application" method="POST" data-netlify="true"
             netlify-honeypot="bot-field" action="/apply-success.html" class="apply-form">
         <input type="hidden" name="form-name" value="event-application" />
+        <input type="hidden" name="formType" value="참가신청" />
         <input type="hidden" name="행사명" value="${escapeHtml(item.title)}" />
         <p class="hp-field"><label>비워두세요: <input name="bot-field" /></label></p>
 
@@ -97,9 +98,10 @@ function matchesQuery(item, q) {
 
 function initBoardPage({ path, wrapperKey, page, emptyText, labels }) {
   const container = document.getElementById("board-container");
+  let site = null; // filled in below; renderDetail() needs it for the apply form
 
   (async function () {
-    const site = await initLayout();
+    site = await initLayout();
     const orgName = site ? site.orgName : "학회";
 
     let items = [];
@@ -154,6 +156,15 @@ function initBoardPage({ path, wrapperKey, page, emptyText, labels }) {
     // Re-render once Identity reports a signed-in user so the files appear.
     if (locked && window.netlifyIdentity) {
       window.netlifyIdentity.on("login", () => renderDetail(item, orgName));
+    }
+
+    // Mirror the application to a Google Sheet if the admin configured one.
+    // This does not touch the native submit — Netlify Forms still gets it
+    // even if the beacon fails or the webhook URL isn't set.
+    const applyForm = document.querySelector('form[name="event-application"]');
+    const sheetsUrl = site && site.integrations && site.integrations.sheetsWebhookUrl;
+    if (applyForm && sheetsUrl) {
+      applyForm.addEventListener("submit", () => sendToSheetsWebhook(applyForm, sheetsUrl));
     }
   }
 

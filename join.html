@@ -47,6 +47,7 @@
           class="card apply-form"
         >
           <input type="hidden" name="form-name" value="member-application" />
+          <input type="hidden" name="formType" value="회원가입" />
           <p class="hp-field">
             <label>비워두세요: <input name="bot-field" /></label>
           </p>
@@ -82,7 +83,13 @@
   <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
   <script src="/js/site.js"></script>
   <script>
-    initLayout();
+    initLayout().then((site) => {
+      const url = site && site.integrations && site.integrations.sheetsWebhookUrl;
+      const form = document.querySelector('form[name="member-application"]');
+      if (url && form) {
+        form.addEventListener("submit", () => sendToSheetsWebhook(form, url));
+      }
+    });
   </script>
 </body>
 </html>

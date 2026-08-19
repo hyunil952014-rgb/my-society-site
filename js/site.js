@@ -53,6 +53,21 @@ async function fetchJSON(path) {
   return res.json();
 }
 
+// Best-effort mirror of a form submission to a Google Sheets Apps Script
+// webhook (see README "구글 시트 자동 연동"). Uses sendBeacon so the request
+// survives the page navigating away right after the native form submit — it
+// never blocks or replaces that submit, and failures here are silent because
+// Netlify Forms is still the reliable copy of the data.
+function sendToSheetsWebhook(form, url) {
+  try {
+    const body = new URLSearchParams(new FormData(form)).toString();
+    const blob = new Blob([body], { type: "text/plain;charset=UTF-8" });
+    navigator.sendBeacon(url, blob);
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 function currentPath() {
   const p = window.location.pathname;
   if (p === "/" || p.endsWith("/")) return "/index.html";

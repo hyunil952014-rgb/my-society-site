@@ -68,6 +68,16 @@ collections:
             fields:
               - { label: "페이스북 주소", name: "facebook", widget: "string", required: false }
               - { label: "네이버 카페 주소", name: "naverCafe", widget: "string", required: false }
+          - label: "연동 (구글 시트 자동 기록)"
+            name: "integrations"
+            widget: "object"
+            required: false
+            fields:
+              - label: "구글 시트 웹앱 주소 (비워두면 기능이 꺼집니다)"
+                name: "sheetsWebhookUrl"
+                widget: "string"
+                required: false
+                hint: "README.md의 '구글 시트 자동 연동' 안내를 따라 만든 뒤, script.google.com에서 배포한 웹 앱 URL을 붙여넣으세요."
 
   - name: "board"
     label: "임원진 소개"
