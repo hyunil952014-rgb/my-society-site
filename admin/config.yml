@@ -135,7 +135,7 @@ collections:
     fields:
       - { label: "제목", name: "title", widget: "string" }
       - { label: "날짜", name: "date", widget: "datetime", date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
-      - { label: "분류", name: "category", widget: "select", options: ["강의 안내", "워크숍", "세미나", "기타"] }
+      - { label: "분류", name: "category", widget: "select", options: ["강의 안내", "워크숍", "세미나", "집담회", "기타"] }
       - { label: "이 페이지에서 참가 신청 받기 (신청 폼이 글 아래에 표시됩니다)", name: "applyEnabled", widget: "boolean", default: false, required: false }
       - { label: "중요 공지로 목록 맨 위에 고정", name: "pinned", widget: "boolean", default: false, required: false }
       - { label: "내용", name: "body", widget: "markdown" }

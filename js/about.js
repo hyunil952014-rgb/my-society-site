@@ -13,8 +13,8 @@
 
   // 인사말
   const greetingEl = document.getElementById("greeting-content");
-  if (about.greeting) {
-    greetingEl.innerHTML = `
+  greetingEl.innerHTML = about.greeting
+    ? `
       <div class="greeting">
         <p>${escapeHtml(about.greeting)}</p>
         ${
@@ -22,10 +22,8 @@
             ? `<p class="greeting-sign">${escapeHtml(about.greetingSignature)}</p>`
             : ""
         }
-      </div>`;
-  } else {
-    hideSection("greeting");
-  }
+      </div>`
+    : '<p class="empty-state">등록된 인사말이 없습니다.</p>';
 
   // 학회 소개 / 설립 목적 / 조직
   const blocks = [
@@ -71,8 +69,9 @@
   ].filter(([, value]) => value);
 
   const officeEl = document.getElementById("office-content");
-  if (rows.length || contact.officeNote) {
-    officeEl.innerHTML = `
+  officeEl.innerHTML =
+    rows.length || contact.officeNote
+      ? `
       ${
         rows.length
           ? `<dl class="info-list">${rows
@@ -83,16 +82,14 @@
               .join("")}</dl>`
           : ""
       }
-      ${contact.officeNote ? `<p class="office-note">${escapeHtml(contact.officeNote)}</p>` : ""}`;
-  } else {
-    hideSection("office");
-  }
+      ${contact.officeNote ? `<p class="office-note">${escapeHtml(contact.officeNote)}</p>` : ""}`
+      : '<p class="empty-state">등록된 사무국 안내가 없습니다.</p>';
 
   // 정관 및 규정
   const documents = (site.documents || []).filter((d) => d && d.file);
   const docsEl = document.getElementById("documents-content");
-  if (documents.length) {
-    docsEl.innerHTML = `
+  docsEl.innerHTML = documents.length
+    ? `
       <ul class="attachment-list">
         ${documents
           .map(
@@ -105,15 +102,6 @@
           </li>`
           )
           .join("")}
-      </ul>`;
-  } else {
-    hideSection("documents");
-  }
-
-  function hideSection(id) {
-    const el = document.getElementById(id);
-    if (el) el.style.display = "none";
-    const link = document.querySelector(`.subnav a[href="#${id}"]`);
-    if (link) link.style.display = "none";
-  }
+      </ul>`
+    : '<p class="empty-state">아직 등록된 정관·규정 문서가 없습니다.</p>';
 })();

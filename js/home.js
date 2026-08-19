@@ -81,13 +81,20 @@ function ddayLabel(days) {
     }
     container.innerHTML = items
       .slice()
-      .sort((a, b) => (a.date < b.date ? 1 : -1))
+      .sort((a, b) => {
+        // Pinned posts float to the top here too, matching the board pages.
+        if (!!a.pinned !== !!b.pinned) return a.pinned ? -1 : 1;
+        return a.date < b.date ? 1 : -1;
+      })
       .slice(0, 6)
       .map(
         (n) => `
       <a class="notice-row" href="${page}?id=${encodeURIComponent(n.id)}">
         <span class="notice-category">${escapeHtml(n.category || "일반")}</span>
-        <span class="notice-title">${escapeHtml(n.title)}</span>
+        <span class="notice-title">
+          ${n.pinned ? '<span class="pin-badge">중요</span>' : ""}
+          ${escapeHtml(n.title)}
+        </span>
         <span class="notice-date">${escapeHtml(n.date)}</span>
       </a>`
       )
