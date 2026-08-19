@@ -24,6 +24,26 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32.png" />
   <link rel="apple-touch-icon" href="/images/favicon-180.png" />
   <link rel="stylesheet" href="/css/style.css" />
+  <!--
+    검색엔진에 "이 사이트 = 이 학회"라는 걸 명확히 알려주는 구조화 데이터입니다.
+    학회명이나 영문명, SNS 주소가 바뀌면 /admin에서 고치는 것과 별개로
+    이 부분도 함께 수정해 주세요 (검색엔진용이라 자동 연동되지 않습니다).
+  -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "근거중심도수물리치료한국학회",
+    "alternateName": ["EMPK", "Evidence based Manipulative Physiotherapy Korea"],
+    "url": "https://empkkorea.netlify.app/",
+    "logo": "https://empkkorea.netlify.app/images/logo.png",
+    "description": "근거에 기반한 도수물리치료의 발전과 임상 실무 역량 강화를 지향하는 학회입니다.",
+    "sameAs": [
+      "https://www.facebook.com/EvidManipPhysiotherKor/",
+      "https://cafe.naver.com/evidmanipphysiother"
+    ]
+  }
+  </script>
 </head>
 <body>
   <header class="site-header" id="site-header"></header>
