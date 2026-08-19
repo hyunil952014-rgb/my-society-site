@@ -101,11 +101,10 @@ function ddayLabel(days) {
       .join("");
   }
 
-  const [notices, education, conference, members] = await Promise.all([
+  const [notices, education, conference] = await Promise.all([
     loadBoard("/content/notices.json", "notices"),
     loadBoard("/content/education.json", "items"),
     loadBoard("/content/conference.json", "items"),
-    loadBoard("/content/board.json", "members"),
   ]);
 
   renderBoard(notices, {
@@ -118,30 +117,6 @@ function ddayLabel(days) {
     containerId: "recent-education",
     emptyText: "등록된 교육안내가 없습니다.",
   });
-
-  // 임원진: 회장단을 우선 노출
-  const leaders = (members || [])
-    .slice()
-    .sort((a, b) => (a.group === "회장단" ? -1 : 1) - (b.group === "회장단" ? -1 : 1))
-    .slice(0, 4);
-  if (leaders.length) {
-    document.getElementById("home-board").innerHTML = leaders
-      .map(
-        (m) => `
-      <a class="member-card" href="/board.html">
-        ${
-          m.photo
-            ? `<img class="member-photo" src="${escapeHtml(m.photo)}" alt="${escapeHtml(m.name)}" loading="lazy" />`
-            : '<div class="member-photo placeholder" aria-hidden="true">사진 없음</div>'
-        }
-        <p class="member-name">${escapeHtml(m.name)}</p>
-        <p class="member-title">${escapeHtml(m.title)}</p>
-        ${m.affiliation ? `<p class="member-affiliation">${escapeHtml(m.affiliation)}</p>` : ""}
-      </a>`
-      )
-      .join("");
-    document.getElementById("board-section").style.display = "";
-  }
 
   // Upcoming events: anything dated from today onward, across all event boards.
   const upcoming = [
