@@ -67,9 +67,15 @@ function headerRow_(formType) {
 function dataRow_(formType, p) {
   var now = Utilities.formatDate(new Date(), "Asia/Seoul", "yyyy-MM-dd HH:mm:ss");
   if (formType === "참가신청") {
-    return [now, p["행사명"] || "", p["이름"] || "", p["소속"] || "", p["연락처"] || "", p["이메일"] || "", p["메모"] || ""];
+    return [now, p["행사명"] || "", p["이름"] || "", p["소속"] || "", asText_(p["연락처"]), p["이메일"] || "", p["메모"] || ""];
   }
-  return [now, p["name"] || "", p["affiliation"] || "", p["phone"] || "", p["email"] || "", p["message"] || "", p["interest"] || ""];
+  return [now, p["name"] || "", p["affiliation"] || "", asText_(p["phone"]), p["email"] || "", p["message"] || "", p["interest"] || ""];
+}
+
+// Sheets turns "01012345678" into the number 1012345678 and drops the
+// leading 0. A leading apostrophe makes appendRow store it as text.
+function asText_(v) {
+  return v ? "'" + v : "";
 }
 
 function jsonOutput_(obj) {
