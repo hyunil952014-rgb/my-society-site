@@ -619,6 +619,82 @@ img { max-width: 100%; display: block; }
   background: var(--bg);
 }
 
+/* Sign-up steps shown instead of the apply form to signed-out visitors */
+.apply-gate {
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--accent);
+  border-radius: 10px;
+  padding: 20px 22px;
+  background: var(--bg);
+}
+
+.apply-gate-lead {
+  margin: 0 0 16px;
+  font-size: 0.96rem;
+}
+
+.apply-steps {
+  list-style: none;
+  margin: 0 0 18px;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+
+.apply-steps li {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.apply-steps .step-num {
+  flex: 0 0 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.apply-steps strong {
+  display: block;
+  color: var(--navy);
+}
+
+.apply-steps span {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
+.apply-gate-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.gate-btn {
+  padding: 11px 20px;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.94rem;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid var(--navy);
+}
+
+.gate-btn-primary { background: var(--navy); color: #fff; }
+.gate-btn-primary:hover { background: var(--navy-dark); }
+.gate-btn-secondary { background: #fff; color: var(--navy); }
+.gate-btn-secondary:hover { background: #eef4f7; }
+
+@media (max-width: 640px) {
+  .gate-btn { flex: 1 1 100%; text-align: center; }
+}
+
 /* Gallery */
 .album + .album {
   margin-top: 48px;
@@ -827,7 +903,7 @@ img { max-width: 100%; display: block; }
   margin-right: 10px;
 }
 
-/* In-page sub navigation (학회 소개) */
+/* In-page sub navigation (연구회 소개) */
 .subnav {
   position: sticky;
   top: 68px;

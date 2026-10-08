@@ -1,5 +1,5 @@
 /**
- * EMPK 학회 홈페이지 — 회원가입/참가 신청을 구글 시트에 자동 기록
+ * EMPK 연구회 홈페이지 — 회원가입/참가 신청을 구글 시트에 자동 기록
  *
  * 설치 방법은 README.md의 "구글 시트 자동 연동" 항목을 그대로 따라 하시면 됩니다.
  * 이 파일은 코드를 그대로 복사해서 script.google.com 편집기에 붙여넣는 용도입니다
@@ -61,7 +61,7 @@ function headerRow_(formType) {
   if (formType === "참가신청") {
     return ["접수일시", "행사명", "이름", "소속", "연락처", "이메일", "남기신 말씀"];
   }
-  return ["접수일시", "이름", "소속", "연락처", "이메일", "가입 동기"];
+  return ["접수일시", "이름", "소속", "연락처", "이메일", "가입 동기", "참가 희망 교육"];
 }
 
 function dataRow_(formType, p) {
@@ -69,7 +69,7 @@ function dataRow_(formType, p) {
   if (formType === "참가신청") {
     return [now, p["행사명"] || "", p["이름"] || "", p["소속"] || "", p["연락처"] || "", p["이메일"] || "", p["메모"] || ""];
   }
-  return [now, p["name"] || "", p["affiliation"] || "", p["phone"] || "", p["email"] || "", p["message"] || ""];
+  return [now, p["name"] || "", p["affiliation"] || "", p["phone"] || "", p["email"] || "", p["message"] || "", p["interest"] || ""];
 }
 
 function jsonOutput_(obj) {

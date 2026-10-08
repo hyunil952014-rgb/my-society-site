@@ -3,27 +3,30 @@
 
 const PAGE_SIZE = 15;
 
-function isLoggedIn() {
-  return !!(window.netlifyIdentity && window.netlifyIdentity.currentUser());
-}
-
 // Members-only posts hide their attachments from signed-out visitors.
 // Note: this is an interface restriction, not file-level security — see README.
 function membersNoticeHtml() {
   return `
     <div class="members-notice">
-      <p>이 자료는 학회 회원에게만 제공됩니다. 로그인 후 첨부파일을 내려받으실 수 있습니다.</p>
+      <p>이 자료는 연구회 회원에게만 제공됩니다. 로그인 후 첨부파일을 내려받으실 수 있습니다.</p>
       <button type="button" class="auth-btn" id="members-login-btn">로그인</button>
       <a class="search-clear" href="/join.html">회원가입 신청</a>
     </div>`;
 }
 
 // Education and conference posts can collect applications straight from the page.
-// Netlify Forms picks the submission up from the static form in apply.html.
-function applyFormHtml(item) {
+// Netlify Forms picks the submission up from the static form in apply-success.html.
+// Unless the post opts out, only signed-in members see the form; everyone else
+// gets the sign-up steps instead.
+function applyBoxHtml(item, user) {
   if (!item.applyEnabled) return "";
+  const loginRequired = item.applyLoginRequired !== false;
+  if (loginRequired && !user) return applyGateHtml(item);
+
+  const name = (user && user.user_metadata && user.user_metadata.full_name) || "";
+  const email = (user && user.email) || "";
   return `
-    <div class="apply-box">
+    <div class="apply-box" id="apply">
       <h3 class="attachments-title">참가 신청</h3>
       <form name="event-application" method="POST" data-netlify="true"
             netlify-honeypot="bot-field" action="/apply-success.html" class="apply-form">
@@ -33,7 +36,7 @@ function applyFormHtml(item) {
         <p class="hp-field"><label>비워두세요: <input name="bot-field" /></label></p>
 
         <label class="form-label" for="apply-name">이름 *</label>
-        <input class="form-input" type="text" id="apply-name" name="이름" required />
+        <input class="form-input" type="text" id="apply-name" name="이름" value="${escapeHtml(name)}" required />
 
         <label class="form-label" for="apply-affiliation">소속 *</label>
         <input class="form-input" type="text" id="apply-affiliation" name="소속" required />
@@ -42,7 +45,7 @@ function applyFormHtml(item) {
         <input class="form-input" type="tel" id="apply-phone" name="연락처" required />
 
         <label class="form-label" for="apply-email">이메일 *</label>
-        <input class="form-input" type="email" id="apply-email" name="이메일" required />
+        <input class="form-input" type="email" id="apply-email" name="이메일" value="${escapeHtml(email)}" required />
 
         <label class="form-label" for="apply-memo">남기실 말씀 (선택)</label>
         <textarea class="form-input" id="apply-memo" name="메모" rows="3"></textarea>
@@ -52,6 +55,41 @@ function applyFormHtml(item) {
         </p>
         <button type="submit" class="form-submit">신청하기</button>
       </form>
+    </div>`;
+}
+
+function applyGateHtml(item) {
+  return `
+    <div class="apply-box" id="apply">
+      <h3 class="attachments-title">참가 신청</h3>
+      <div class="apply-gate">
+        <p class="apply-gate-lead">
+          참가 신청은 <strong>회원 로그인 후</strong> 이 페이지에서 하실 수 있습니다.
+          회비 없이 누구나 가입하실 수 있습니다.
+        </p>
+        <ol class="apply-steps">
+          <li>
+            <span class="step-num">1</span>
+            <div><strong>회원가입 신청</strong>
+              <span>이름·소속·연락처·이메일을 입력해 주세요.</span></div>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <div><strong>초대 메일 확인</strong>
+              <span>운영진 확인 후 이메일로 초대 메일을 보내드립니다. 받은편지함에 없으면 스팸함도 확인해 주세요.</span></div>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <div><strong>비밀번호 설정 후 참가 신청</strong>
+              <span>메일의 링크에서 비밀번호를 정하면 로그인되고, 이 페이지에 신청서가 열립니다.</span></div>
+          </li>
+        </ol>
+        <div class="apply-gate-actions">
+          <a class="gate-btn gate-btn-primary" id="gate-join"
+             href="/join.html?event=${encodeURIComponent(item.id)}">회원가입 신청하기</a>
+          <button type="button" class="gate-btn gate-btn-secondary" id="gate-login">이미 회원이에요 · 로그인</button>
+        </div>
+      </div>
     </div>`;
 }
 
@@ -99,10 +137,11 @@ function matchesQuery(item, q) {
 function initBoardPage({ path, wrapperKey, page, emptyText, labels }) {
   const container = document.getElementById("board-container");
   let site = null; // filled in below; renderDetail() needs it for the apply form
+  let authBound = false;
 
   (async function () {
     site = await initLayout();
-    const orgName = site ? site.orgName : "학회";
+    const orgName = site ? site.orgName : "연구회";
 
     let items = [];
     try {
@@ -136,7 +175,8 @@ function initBoardPage({ path, wrapperKey, page, emptyText, labels }) {
       return;
     }
     document.title = `${item.title} | ${orgName}`;
-    const locked = item.membersOnly && !isLoggedIn();
+    const user = currentUser();
+    const locked = item.membersOnly && !user;
     container.innerHTML = `
       <a class="back-link" href="${page}">&larr; 목록으로</a>
       <article class="notice-detail">
@@ -144,18 +184,25 @@ function initBoardPage({ path, wrapperKey, page, emptyText, labels }) {
         <div class="notice-meta">${escapeHtml(item.category || "")} · ${escapeHtml(item.date)}</div>
         <div class="notice-body rich">${item.bodyHtml || ""}</div>
         ${locked ? membersNoticeHtml() : attachmentsHtml(item.attachments)}
-        ${applyFormHtml(item)}
+        ${applyBoxHtml(item, user)}
       </article>`;
 
+    const openLogin = () => window.netlifyIdentity && window.netlifyIdentity.open("login");
     const loginBtn = document.getElementById("members-login-btn");
-    if (loginBtn) {
-      loginBtn.addEventListener("click", () => {
-        window.netlifyIdentity && window.netlifyIdentity.open("login");
-      });
-    }
-    // Re-render once Identity reports a signed-in user so the files appear.
-    if (locked && window.netlifyIdentity) {
-      window.netlifyIdentity.on("login", () => renderDetail(item, orgName));
+    if (loginBtn) loginBtn.addEventListener("click", openLogin);
+    const gateLogin = document.getElementById("gate-login");
+    if (gateLogin) gateLogin.addEventListener("click", openLogin);
+    // Leaving to sign up: come back here once the invite is accepted.
+    const gateJoin = document.getElementById("gate-join");
+    if (gateJoin) gateJoin.addEventListener("click", () => rememberReturnTo());
+
+    // Re-render when the sign-in state changes so files and the apply form
+    // appear (or disappear) without a reload. Bound once per page.
+    if (!authBound && window.netlifyIdentity && (item.membersOnly || item.applyEnabled)) {
+      authBound = true;
+      ["init", "login", "logout"].forEach((ev) =>
+        window.netlifyIdentity.on(ev, () => renderDetail(item, orgName))
+      );
     }
 
     // Mirror the application to a Google Sheet if the admin configured one.

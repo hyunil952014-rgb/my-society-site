@@ -1,0 +1,20 @@
+<!--
+  Netlify Identity 초대 메일 (한국어).
+  적용: Netlify 대시보드 → Site configuration → Identity → Emails
+        → Invitation template → Path to template 에 /email-templates/invite.html 입력
+-->
+<h2>대한근거중심도수물리치료연구회 회원가입 안내</h2>
+<p>안녕하세요. 대한근거중심도수물리치료연구회(EMPK)입니다.</p>
+<p>회원가입 신청이 확인되었습니다. 아래 버튼을 눌러 <strong>비밀번호를 설정</strong>하시면 바로 로그인됩니다.</p>
+<p>
+  <a href="{{ .SiteURL }}/#invite_token={{ .Token }}"
+     style="display:inline-block;padding:12px 24px;background:#006c90;color:#ffffff;text-decoration:none;border-radius:6px;font-weight:bold;">
+    비밀번호 설정하고 로그인하기
+  </a>
+</p>
+<p>로그인 후 홈페이지의 <strong>교육안내</strong>에서 원하는 교육 글을 열면 글 아래에 참가 신청서가 보입니다.</p>
+<p style="color:#6b7686;font-size:13px;">
+  버튼이 눌리지 않으면 이 주소를 브라우저에 붙여넣어 주세요:<br />
+  {{ .SiteURL }}/#invite_token={{ .Token }}
+</p>
+<p style="color:#6b7686;font-size:13px;">문의: empkkorea7@gmail.com</p>

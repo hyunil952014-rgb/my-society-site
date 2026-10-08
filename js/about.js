@@ -6,7 +6,7 @@
     return;
   }
 
-  document.title = `학회 소개 | ${site.orgName}`;
+  document.title = `연구회 소개 | ${site.orgName}`;
   document.getElementById("hero-tagline").textContent = site.tagline || "";
 
   const about = site.about || {};
@@ -25,9 +25,9 @@
       </div>`
     : '<p class="empty-state">등록된 인사말이 없습니다.</p>';
 
-  // 학회 소개 / 설립 목적 / 조직
+  // 연구회 소개 / 설립 목적 / 조직
   const blocks = [
-    { id: "intro-block", title: "학회 소개", text: about.intro },
+    { id: "intro-block", title: "연구회 소개", text: about.intro },
     { id: "purpose", title: "설립 목적", text: about.purpose },
     { id: "organization", title: "조직 안내", text: about.organization },
   ].filter((b) => b.text);

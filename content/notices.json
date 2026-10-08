@@ -1,11 +1,21 @@
 {
   "notices": [
     {
-      "title": "학회 홈페이지를 새롭게 개설했습니다",
+      "title": "교육·집담회 참가 신청 방법 안내",
+      "date": "2026-10-07",
+      "category": "일반",
+      "pinned": true,
+      "id": "20261007090000",
+      "bodyHtml": "<p><img src=\"/images/uploads/registration-guide.jpg\" alt=\"교육 신청 안내 - 01 홈페이지 회원가입, 02 로그인 후 교육신청\" loading=\"lazy\" /></p>\n<p>대한근거중심도수물리치료연구회의 교육과 집담회는 <strong>홈페이지 회원가입 후 로그인하여</strong> 신청하실 수 있습니다. 회비는 없으며 누구나 가입하실 수 있습니다.</p>\n<h3>신청 순서</h3>\n<ol>\n<li><strong>회원가입 신청</strong>: 상단 메뉴의 <strong>회원가입</strong>에서 이름·소속·연락처·이메일을 입력합니다.</li>\n<li><strong>초대 메일 확인</strong>: 운영진 확인 후 입력하신 이메일로 초대 메일이 발송됩니다. 받은편지함에 없으면 스팸함도 확인해 주세요.</li>\n<li><strong>비밀번호 설정</strong>: 메일의 링크를 누르고 비밀번호를 정하면 바로 로그인됩니다.</li>\n<li><strong>참가 신청</strong>: <a href=\"/education.html\">교육안내</a>에서 원하는 교육 글을 열면 글 아래에 신청서가 보입니다.</li>\n</ol>\n<p>이미 회원이신 분은 상단 메뉴의 <strong>로그인</strong> 후 바로 신청하시면 됩니다.</p>\n<h3>현재 신청 중인 교육</h3>\n<ul>\n<li><a href=\"/education.html?id=20261007100000\">2차 집담회: 멀리건 컨셉의 경추 접근법</a> (10월 17일)</li>\n<li><a href=\"/education.html?id=20261007100100\">허리 정규코스: 요통의 평가와 임상적 관리</a> (11월 14일 시작)</li>\n</ul>\n<p>문의: empkkorea7@gmail.com</p>",
+      "attachments": [],
+      "membersOnly": false
+    },
+    {
+      "title": "연구회 홈페이지를 새롭게 개설했습니다",
       "date": "2026-08-14",
       "category": "일반",
       "id": "20260814090000",
-      "bodyHtml": "<p>안녕하세요, 근거중심도수물리치료한국학회(EMPK)입니다. 회원 여러분과의 소통을 위해 학회 홈페이지를 새롭게 개설하였습니다. 앞으로 학회 소식, 학술대회 및 교육 일정을 이 곳에서 확인하실 수 있습니다.</p>",
+      "bodyHtml": "<p>안녕하세요, 대한근거중심도수물리치료연구회(EMPK)입니다. 회원 여러분과의 소통을 위해 연구회 홈페이지를 새롭게 개설하였습니다. 앞으로 연구회 소식, 학술대회 및 교육 일정을 이 곳에서 확인하실 수 있습니다.</p>",
       "attachments": [],
       "pinned": false,
       "membersOnly": false

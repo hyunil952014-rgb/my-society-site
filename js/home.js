@@ -42,7 +42,7 @@ function ddayLabel(days) {
     const links = socialLinks(site.social);
     if (links.length) {
       const descriptions = {
-        페이스북: "학회 소식과 활동 사진을 확인하실 수 있습니다.",
+        페이스북: "연구회 소식과 활동 사진을 확인하실 수 있습니다.",
         "네이버 카페": "회원 간 자료 공유와 소통이 이루어지는 공간입니다.",
       };
       document.getElementById("social-links").innerHTML = links
@@ -120,7 +120,11 @@ function ddayLabel(days) {
 
   // Upcoming events: anything dated from today onward, across all event boards.
   const upcoming = [
-    ...(notices || []).map((n) => ({ ...n, page: "/notices.html" })),
+    // Ordinary notices are dated when posted, not when something happens —
+    // only conference notices describe an upcoming event.
+    ...(notices || [])
+      .filter((n) => n.category === "학술대회")
+      .map((n) => ({ ...n, page: "/notices.html" })),
     ...(education || []).map((n) => ({ ...n, page: "/education.html" })),
     ...(conference || []).map((n) => ({ ...n, page: "/conference.html" })),
   ]

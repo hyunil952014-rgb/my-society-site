@@ -2,7 +2,7 @@
 (async function () {
   const container = document.getElementById("board-container");
   const site = await initLayout();
-  const orgName = site ? site.orgName : "학회";
+  const orgName = site ? site.orgName : "연구회";
   document.title = `갤러리 | ${orgName}`;
 
   let albums = [];

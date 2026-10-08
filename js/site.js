@@ -5,10 +5,10 @@
 const NAV_ITEMS = [
   { href: "/index.html", label: "홈" },
   {
-    label: "학회소개",
+    label: "연구회소개",
     children: [
       { href: "/about.html#greeting", label: "인사말" },
-      { href: "/about.html#intro", label: "학회 소개" },
+      { href: "/about.html#intro", label: "연구회 소개" },
       { href: "/about.html#history", label: "연혁" },
       { href: "/about.html#office", label: "사무국 안내" },
       { href: "/about.html#documents", label: "정관·규정" },
@@ -226,6 +226,33 @@ function renderAuthArea(user) {
   });
 }
 
+// Page to reopen after the next login, e.g. the event someone wanted to apply
+// to before they had an account. Stored per browser; failures are harmless.
+const RETURN_KEY = "empk:returnTo";
+
+function rememberReturnTo(path) {
+  try {
+    localStorage.setItem(RETURN_KEY, path || window.location.pathname + window.location.search);
+  } catch (e) {
+    /* storage blocked — the user just lands on the default page */
+  }
+}
+
+function takeReturnTo() {
+  try {
+    const v = localStorage.getItem(RETURN_KEY);
+    localStorage.removeItem(RETURN_KEY);
+    // Only same-site paths, never an absolute or protocol-relative URL.
+    return v && v.startsWith("/") && !v.startsWith("//") ? v : null;
+  } catch (e) {
+    return null;
+  }
+}
+
+function currentUser() {
+  return (window.netlifyIdentity && window.netlifyIdentity.currentUser()) || null;
+}
+
 function initAuth() {
   if (!window.netlifyIdentity) {
     renderAuthArea(null);
@@ -239,6 +266,12 @@ function initAuth() {
   window.netlifyIdentity.on("login", (user) => {
     renderAuthArea(user);
     window.netlifyIdentity.close();
+    // Someone who left an event page to sign up lands back on it once the
+    // invite is accepted (same browser only).
+    const back = takeReturnTo();
+    if (back && back !== window.location.pathname + window.location.search) {
+      window.location.href = back;
+    }
   });
 
   window.netlifyIdentity.on("logout", () => {
@@ -262,8 +295,8 @@ async function initLayout() {
     renderFooter(site.orgName, site.contact, site.social);
   } catch (e) {
     console.error(e);
-    renderHeader("학회", "");
-    renderFooter("학회", {}, null);
+    renderHeader("연구회", "");
+    renderFooter("연구회", {}, null);
   }
   initAuth();
   return site;
