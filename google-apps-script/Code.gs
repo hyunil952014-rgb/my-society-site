@@ -61,7 +61,7 @@ function headerRow_(formType) {
   if (formType === "참가신청") {
     return ["접수일시", "행사명", "이름", "소속", "연락처", "이메일", "남기신 말씀"];
   }
-  return ["접수일시", "이름", "소속", "연락처", "이메일", "가입 동기", "참가 희망 교육"];
+  return ["접수일시", "이름", "소속", "연락처", "이메일", "가입 동기"];
 }
 
 function dataRow_(formType, p) {
@@ -69,7 +69,7 @@ function dataRow_(formType, p) {
   if (formType === "참가신청") {
     return [now, p["행사명"] || "", p["이름"] || "", p["소속"] || "", asText_(p["연락처"]), p["이메일"] || "", p["메모"] || ""];
   }
-  return [now, p["name"] || "", p["affiliation"] || "", asText_(p["phone"]), p["email"] || "", p["message"] || "", p["interest"] || ""];
+  return [now, p["name"] || "", p["affiliation"] || "", asText_(p["phone"]), p["email"] || "", p["message"] || ""];
 }
 
 // Sheets turns "01012345678" into the number 1012345678 and drops the

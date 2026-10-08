@@ -64,11 +64,6 @@
           <label class="form-label" for="email">이메일 *</label>
           <input class="form-input" type="email" id="email" name="email" required />
 
-          <label class="form-label" for="interest">참가하려는 교육·행사 (선택)</label>
-          <select class="form-input" id="interest" name="interest">
-            <option value="">없음 (가입만 신청)</option>
-          </select>
-
           <label class="form-label" for="message">가입 동기 / 하고 싶은 말 (선택)</label>
           <textarea class="form-input" id="message" name="message" rows="4"></textarea>
 
@@ -95,32 +90,6 @@
         form.addEventListener("submit", () => sendToSheetsWebhook(form, url));
       }
     });
-
-    // Offer the events that are currently taking applications, and preselect
-    // the one the visitor came from (?event=<id>).
-    (async function () {
-      const select = document.getElementById("interest");
-      const wanted = new URLSearchParams(window.location.search).get("event");
-      let items = [];
-      try {
-        items = ((await fetchJSON("/content/education.json")).items || []).filter((n) => n.applyEnabled);
-      } catch (e) {
-        console.error(e);
-      }
-      items.forEach((n) => {
-        const opt = document.createElement("option");
-        opt.value = n.title;
-        opt.textContent = n.title;
-        opt.dataset.id = n.id;
-        if (String(n.id) === wanted) opt.selected = true;
-        select.appendChild(opt);
-      });
-      // Picking an event here means: open that event page after the first login.
-      document.querySelector('form[name="member-application"]').addEventListener("submit", () => {
-        const id = select.selectedOptions[0] && select.selectedOptions[0].dataset.id;
-        if (id) rememberReturnTo(`/education.html?id=${encodeURIComponent(id)}`);
-      });
-    })();
   </script>
 </body>
 </html>
