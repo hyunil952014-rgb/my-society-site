@@ -12,13 +12,11 @@ const NAV_ITEMS = [
       { href: "/about.html#history", label: "연혁" },
       { href: "/about.html#office", label: "사무국 안내" },
       { href: "/about.html#documents", label: "정관·규정" },
-      { href: "/board.html", label: "임원진 소개" },
     ],
   },
   {
     label: "학술행사",
     children: [
-      { href: "/conference.html", label: "학술대회" },
       { href: "/education.html", label: "교육안내" },
     ],
   },
@@ -26,7 +24,6 @@ const NAV_ITEMS = [
     label: "알림마당",
     children: [
       { href: "/notices.html", label: "공지사항" },
-      { href: "/resources.html", label: "자료실" },
       { href: "/gallery.html", label: "갤러리" },
     ],
   },
